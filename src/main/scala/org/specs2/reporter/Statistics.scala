@@ -52,7 +52,7 @@ trait Statistics {
         case ExecutedSpecEnd(_,_,s)    => BlockEnd(s)
         case other                     => BlockBit(f.stats)
       }
-      totalContext(fragments.map(toBlock))
+      totalContext(fragments.map(toBlock))(statsMonoid)
     }
     lazy val total = totals.lastOption.getOrElse(Stats())
   }
