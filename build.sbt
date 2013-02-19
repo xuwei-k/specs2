@@ -24,8 +24,8 @@ resolvers ++= Seq("releases" at "http://oss.sonatype.org/content/repositories/re
                   "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots")
 
 libraryDependencies <<= scalaVersion { scala_version => Seq(
-  "org.specs2" % "scalaz-core_2.11.0-SNAPSHOT" % "7.0.1-SNAPSHOT",
-  "org.specs2" % "scalaz-concurrent_2.11.0-SNAPSHOT" % "7.0.1-SNAPSHOT",
+  "org.specs2" % "specs2-scalaz-core_2.11.0-SNAPSHOT" % "7.0.1-SNAPSHOT",
+  "org.specs2" % "specs2-scalaz-concurrent_2.11.0-SNAPSHOT" % "7.0.1-SNAPSHOT",
   "org.scala-lang" % "scala-compiler" % scala_version  % "optional",
   "org.scalacheck" % "scalacheck_2.10.0" % "1.10.0" % "optional",
   "org.scala-tools.testing" % "test-interface" % "0.5" % "optional",
