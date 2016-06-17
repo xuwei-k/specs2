@@ -29,10 +29,7 @@ object depends {
     }.toList
 
   def kindp(scalaVersion: String) =
-    if (scalaVersion startsWith "2.12.0-M4")
-      "org.spire-math" % "kind-projector_2.12.0-M3" % "0.7.1"
-    else
-      "org.spire-math" % "kind-projector" % "0.7.1" cross CrossVersion.binary
+    "org.spire-math" % "kind-projector" % "0.8.0" cross CrossVersion.binary
 
   def scalacheck(scalaVersion: String) =
     Seq("org.scalacheck" %% "scalacheck"    % "1.13.1")
