@@ -1,6 +1,6 @@
 package org.mockito.internal.progress
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import org.hamcrest.Matcher
 
 /**
@@ -10,7 +10,7 @@ object ThreadSafeMockingProgress2 extends ThreadSafeMockingProgress {
   def pullLocalizedMatchers = ThreadSafeMockingProgress.threadSafely().getArgumentMatcherStorage.pullLocalizedMatchers()
 
   def reportMatchers(matchers: java.util.List[Matcher[_]]) = {
-    matchers.foreach(m => ThreadSafeMockingProgress.threadSafely().getArgumentMatcherStorage.reportMatcher(m))
+    matchers.asScala.foreach(m => ThreadSafeMockingProgress.threadSafely().getArgumentMatcherStorage.reportMatcher(m))
   }
 }
 

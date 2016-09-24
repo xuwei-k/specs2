@@ -3,7 +3,7 @@ package reporter
 
 import org.junit.runner.Description
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scalaz.Tree._
 import scalaz.{Show, Tree}
 
@@ -17,7 +17,7 @@ trait ShowDescription {
   }
 
   implicit def toTree(desc: Description): Tree[Description] =
-    unfoldTree(desc)((d: Description) => (d, () => d.getChildren.toStream))
+    unfoldTree(desc)((d: Description) => (d, () => d.getChildren.asScala.toStream))
 
 }
 

@@ -8,8 +8,8 @@ import org.mockito.internal.util.collections.ArrayUtils
 import java.util.ArrayList
 import java.util.List
 import org.mockito.internal.progress.ThreadSafeMockingProgress2
-import scala.collection.{GenSetLike, GenSeqLike, JavaConversions}
-import JavaConversions._
+import scala.collection.{GenSetLike, GenSeqLike, JavaConverters}
+import JavaConverters._
 
 /*
  * Copyright (c) 2007 Mockito contributors
@@ -65,8 +65,8 @@ object ArgumentsProcessor {
           else {
             // otherwise we add all the existing arguments matchers +
             // we reset the state of the argumentMatchersStorage
-            matchers.addAll(argumentsMatchers.map(_.getActualMatcher))
-            ThreadSafeMockingProgress2.reportMatchers(argumentsMatchers.map(_.getActualMatcher))
+            matchers.addAll(argumentsMatchers.asScala.map(_.getActualMatcher).asJava)
+            ThreadSafeMockingProgress2.reportMatchers(argumentsMatchers.asScala.map(_.getActualMatcher).asJava)
           }
         }
       }

@@ -6,7 +6,7 @@ import specification._
 import java.util.Arrays._
 import scala.collection.parallel.ParSeq
 import control.NumberOfTimes
-import scala.collection.JavaConversions.collectionAsScalaIterable
+import scala.collection.JavaConverters._
 
 class TraversableMatchersSpec extends Spec with ResultMatchers with Grouped with NumberOfTimes with MustMatchers { def is = s2"""
 
@@ -194,7 +194,7 @@ class TraversableMatchersSpec extends Spec with ResultMatchers with Grouped with
 
  Java collections can also be used with Traversable matchers but generally require explicit conversion
    ${ asList("Hello", "World") must haveSize(2) }
-   ${ collectionAsScalaIterable(asList("Hello", "World")) must containMatch("ll") }
+   ${ asList("Hello", "World").asScala must containMatch("ll") }
 
  With Parallel collections
  =========================
