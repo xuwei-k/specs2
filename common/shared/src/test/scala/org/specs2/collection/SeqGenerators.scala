@@ -25,8 +25,22 @@ trait SeqGenerators {
    */
   def someSlicesOf[T](ts: T*): Gen[Seq[Seq[T]]] = for {
     tss <- Gen.someOf(ts)
-    result <- slicesOf(tss:_*)
+    result <- slicesOfElements(tss.toList)
   } yield result
+
+  private def slicesOfElements[T](ts: Seq[T]): Gen[Seq[Seq[T]]] = {
+    def slice(indices: Seq[Int]): Seq[Seq[T]] = {
+      indices.sliding(2).foldLeft(Seq.empty[Seq[T]]) { (res, cur) =>
+        val (i, j) = (cur.head, cur.last)
+        res :+ ts.slice(i, j)
+      }
+    }
+    for {
+      indices <- Gen.someOf(ts.indices)
+    } yield slice(indices.toList.sorted)
+  }
+
+
 }
 
 object SeqGenerators extends SeqGenerators

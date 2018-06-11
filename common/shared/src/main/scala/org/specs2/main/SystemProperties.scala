@@ -13,7 +13,7 @@ trait SystemProperties {
 
   /** copy system properties on first access to avoid possible concurrent modification exceptions later */
   private lazy val systemProperties =
-    synchronized(System.getProperties.stringPropertyNames.asScala.toList.foldLeft(Map[String, String]()) { (res, key) =>
+    synchronized(System.getProperties.stringPropertyNames.asScala.foldLeft(Map[String, String]()) { (res, key) =>
       res.updated(key,System.getProperty(key))
     })
 
