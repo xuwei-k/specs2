@@ -64,7 +64,7 @@ trait TraversableBaseMatchers { outer =>
     def apply[S <: Traversable[T]](t: Expectable[S]) = {
       val missing = seq.difference(t.value.toSeq, equality)
       val added   = t.value.toSeq.difference(seq, equality)
-      def message(diffs: Seq[_], msg: String) =
+      def message(diffs: scala.collection.Seq[_], msg: String) =
         if (diffs.isEmpty) "" else diffs.mkString("\n  "+msg+": ", ", ", "")
 
       result(missing.isEmpty && added.isEmpty,
@@ -208,7 +208,7 @@ import text.Plural._
 
 case class ContainWithResult[T](check: ValueCheck[T], timesMin: Option[Times] = Some(1.times), timesMax: Option[Times] = None, checkAll: Boolean = true) extends Matcher[GenTraversableOnce[T]] {
   def apply[S <: GenTraversableOnce[T]](t: Expectable[S]) = {
-    val seq = Vector(t.value.seq.toSeq:_*)
+    val seq = Vector(t.value.toSeq:_*)
 
     // stop after the first failure if !checkAll
     val (successes, failures) = seq.foldLeft((Seq[Result](), Seq[Result]())) { (res, cur) =>
@@ -254,20 +254,20 @@ case class ContainWithResult[T](check: ValueCheck[T], timesMin: Option[Times] = 
   def foreach = copy(timesMin = None, timesMax = None)
 
   private
-  def messages[S <: GenTraversableOnce[T]](expectable: String, successes: Seq[Result], failures: Seq[Result]) = check match {
+  def messages[S <: GenTraversableOnce[T]](expectable: String, successes: scala.collection.Seq[Result], failures: scala.collection.Seq[Result]) = check match {
     case BeEqualTypedValueCheck(expected) => (s"$expectable contains $expected", s"$expectable does not contain $expected")
     case BeEqualValueCheck(expected)      => (s"$expectable contains $expected", s"$expectable does not contain $expected")
     case _                                => genericMessages(expectable, successes, failures)
   }
 
   private
-  def genericMessages(expectable: String, successes: Seq[Result], failures: Seq[Result]) = {
-    def elementsAre(results: Seq[Result], success: Boolean) =
+  def genericMessages(expectable: String, successes: scala.collection.Seq[Result], failures: scala.collection.Seq[Result]) = {
+    def elementsAre(results: scala.collection.Seq[Result], success: Boolean) =
       if   (results.isEmpty)      s"There are no matches"
       else if (results.size <= 1) s"There is ${results.size} ${if (success) "success" else "failure"}"
       else                        s"There are ${results.size} ${if (success) "successes" else "failures"}"
 
-    def messages(results: Seq[Result]) =
+    def messages(results: scala.collection.Seq[Result]) =
       if (results.isEmpty) ""
       else                 results.map(_.message).mkString("\n", "\n", "\n")
 
@@ -285,7 +285,7 @@ case class ContainWithResultSeq[T](checks: Seq[ValueCheck[T]],
                                    negate: Boolean = false) extends Matcher[GenTraversableOnce[T]] {
 
   def apply[S <: GenTraversableOnce[T]](t: Expectable[S]) = {
-    val seq = t.value.seq.toSeq
+    val seq = t.value.toSeq
 
     // results for each element, either checked in order or
     // trying to find the best matching from the list of checks

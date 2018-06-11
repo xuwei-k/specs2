@@ -16,8 +16,8 @@ trait Sized[T] {
 
 object Sized {
   /** any scala collection has a size */
-  implicit def scalaTraversableIsSized[I <: GenTraversableOnce[_]]: Sized[I] = new Sized[I] {
-    def size(t: I) = t.size
+  implicit def scalaTraversableIsSized[A, I <: GenTraversableOnce[A]]: Sized[I] = new Sized[I] {
+    def size(t: I) = t.toIterator.size
   }
   /** any scala array has a size */
   implicit def scalaArrayIsSized[T]: Sized[Array[T]] = new Sized[Array[T]] {

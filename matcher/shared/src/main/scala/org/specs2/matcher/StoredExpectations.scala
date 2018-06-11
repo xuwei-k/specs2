@@ -14,7 +14,7 @@ trait StoredExpectations extends Expectations {
     m
   }
 
-  def storedResults: Seq[Result] = {
+  def storedResults: scala.collection.Seq[Result] = {
     val failures = results.filterNot(_.isSuccess)
     val rs = results.map {
       case f: MatchFailure[_] if failures.size > 1 =>
@@ -33,11 +33,11 @@ trait StoredExpectations extends Expectations {
 
   override def sandboxMatchResult[T](mr: =>MatchResult[T]): MatchResult[T] = synchronized {
     val resultsCopy = new scala.collection.mutable.ListBuffer[MatchResult[_]]
-    resultsCopy.appendAll(results)
+    resultsCopy ++= results
     try mr
     finally {
       results.clear
-      results.appendAll(resultsCopy)
+      results ++= resultsCopy
     }
   }
 }
