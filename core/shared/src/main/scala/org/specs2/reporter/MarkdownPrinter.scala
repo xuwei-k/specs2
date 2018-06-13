@@ -3,7 +3,7 @@ package reporter
 
 import control._
 import Actions._
-import io._
+import org.specs2.io._
 import execute._
 import main.Arguments
 import specification.core._
