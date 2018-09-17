@@ -45,7 +45,9 @@ object HopcroftKarp {
 
     def dfs(v: Int): Boolean = {
       if (v != -1) {
-        edges.get(v).toSeq.flatten.foreach { u =>
+        val i = edges.get(v).toSeq.flatten.iterator
+        while (i.hasNext) {
+          val u = i.next
           if (dist(pair2(u)) == dist(v) + 1 && dfs(pair2(u))) {
             pair2.put(u, v)
             pair1.put(v, u)

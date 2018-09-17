@@ -1,57 +1,21 @@
 sudo: false
-dist: trusty
 
 language: scala
 
 scala:
-  - 2.12.6
+  - 2.13.0-M5
 
-jdk: oraclejdk9
-
-addons:
-  apt:
-    packages:
-      - oracle-java9-installer
+jdk: oraclejdk8
 
 # These directories are cached to S3 at the end of the build
 cache:
   directories:
     - $HOME/.ivy2/cache
     - $HOME/.sbt/boot/
-
-before_cache:
-  # Cleanup the cached directories to avoid unnecessary cache updates
-  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
-  - find $HOME/.sbt        -name "*.lock"               -print -delete
-
+before_script:
+- git clone -b v0.9.7 https://github.com/non/kind-projector.git
+- cd kind-projector
+- sbt "++ ${TRAVIS_SCALA_VERSION}!" publishLocal
+- cd ..
 script:
-
-  - ./.travis-test.sh coreJVM
-  - ./.travis-test.sh tests
-
-  - ./.travis-test.sh examplesJVM
-  - ./.travis-test.sh junitJVM
-  - ./.travis-test.sh matcherExtraJVM
-  - ./.travis-test.sh mockJVM
-  - ./.travis-test.sh scalacheckJVM
-  - ./.travis-test.sh scalazJVM
-  - ./.travis-test.sh shapelessJVM
-
-  - ./.travis-test.sh gwt
-  - ./.travis-test.sh html
-  - ./.travis-test.sh markdown
-  - ./.travis-test.sh tests
-
-  - ./.travis-test.sh coreJS
-  - ./.travis-test.sh examplesJS
-
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
-
-notifications:
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/6f43e8d682579a80ef5f
-    on_success: always
-    on_failure: always
-    on_start:   never
+- sbt "++ ${TRAVIS_SCALA_VERSION}!" compile

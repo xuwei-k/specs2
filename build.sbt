@@ -27,7 +27,7 @@ lazy val specs2 = project.in(file(".")).
 lazy val specs2Settings = Seq(
   organization := "org.specs2",
   specs2Version in GlobalScope := version.value,
-  scalazVersion in GlobalScope := "7.2.24",
+  scalazVersion in GlobalScope := "7.2.26",
   specs2ShellPrompt,
   scalaVersion := "2.12.6",
   crossScalaVersions := Seq(scalaVersion.value, "2.11.12", "2.13.0-M4"))
@@ -141,12 +141,10 @@ lazy val common = crossProject(JSPlatform, JVMPlatform).in(file("common")).
 ).
   jsSettings(depends.jsTest, moduleJsSettings("common"),
     libraryDependencies ++= Seq(
-      "org.scalacheck" %%% "scalacheck" % "1.14.0" % "test"
     )
   ).
   jvmSettings(moduleJvmSettings("common"),
     libraryDependencies ++= Seq(
-      "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
     )
   )
 
@@ -351,7 +349,7 @@ lazy val compilationSettings = Seq(
       (sourceDirectory in (Test, test)).value / s"scala-scalaz-7.1.x"),
   maxErrors := 20,
   scalacOptions in Compile ++=
-      Seq("-Xfatal-warnings",
+      Seq(
         "-Xlint",
         "-Ywarn-numeric-widen",
         "-Ywarn-value-discard",
