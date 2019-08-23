@@ -17,7 +17,7 @@ When you use a build tool you generally only need to specify the main dependenci
  `"com.chuusai" %% "shapeless" % "2.3.2"`                                               | if you use the GWT trait or case class diffs
  `"org.scalacheck" %% "scalacheck" % "1.13.4"`                                          | if using ScalaCheck
  `"org.mockito" % "mockito-core" % "1.9.5"`                                             | if using Mockito. Note: specs2.jar must be placed before mockito.jar on the classpath
- `"org.hamcrest" % "hamcrest-core" % "1.3"`                                             | if using Hamcrest matchers with Mockito
+ `"org.hamcrest" % "hamcrest-core" % "2.1"`                                             | if using Hamcrest matchers with Mockito
  `"junit" % "junit" % "4.12"`                                                           | if using JUnit
  `"org.specs2" % "classycle" % "1.4.1"`                                                 | if using the `org.specs2.specification.Analysis` trait
  `"org.scala-lang" % "scala-reflect" % "2.10.4"`                                        | if using interpolated specifications and/or macro matchers

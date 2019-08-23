@@ -46,7 +46,7 @@ object depends {
 
   lazy val mockito  = "org.mockito"  % "mockito-core"  % "2.28.2"
   lazy val junit    = "junit"        % "junit"         % "4.12"
-  lazy val hamcrest = "org.hamcrest" % "hamcrest-core" % "1.3"
+  lazy val hamcrest = "org.hamcrest" % "hamcrest-core" % "2.1"
 
   lazy val pegdown = "org.pegdown" % "pegdown" % "1.6.0"
 
