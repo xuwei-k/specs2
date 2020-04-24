@@ -474,10 +474,7 @@ lazy val testingSettings = Seq(
   initialCommands in console in test := "import org.specs2._",
   logBuffered := false,
   cancelable in Global := true,
-  testFrameworks := Seq(TestFramework("org.specs2.runner.Specs2Framework")),
-  testOptions := Seq(Tests.Filter(s =>
-    (Seq(".guide.").exists(s.contains) || Seq("Spec", "Guide", "Website").exists(s.endsWith)) &&
-      Seq("Specification", "FeaturesSpec").forall(n => !s.endsWith(n))))
+  testFrameworks := Seq(TestFramework("org.specs2.runner.Specs2Framework"))
 )
 
 lazy val testingJvmSettings = Seq(
@@ -551,8 +548,7 @@ lazy val publicationSettings = Seq(
           <url>http://etorreborre.blogspot.com/</url>
         </developer>
       </developers>
-    ),
-  credentials := Seq(Credentials(Path.userHome / ".sbt" / "specs2.credentials"))
+    )
 ) ++
   Sonatype.projectSettings
 

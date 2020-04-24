@@ -32,6 +32,7 @@ object SpecificationStructure {
    * create a SpecificationStructure from a class name
    */
   def create(className: String, classLoader: ClassLoader = Thread.currentThread.getContextClassLoader, env: Option[Env] = None): Operation[SpecificationStructure] = {
+    println("ああああああ")
     lazy val defaultInstances = env.toList.flatMap(_.defaultInstances)
 
     // make sure the instantiated class is a Specification Structure (see #477)
@@ -39,13 +40,17 @@ object SpecificationStructure {
       Operations.delayed(classOf[SpecificationStructure].cast(i))
 
     existsClass(className+"$", classLoader) flatMap { e =>
-      if (e)
+      println("インスタンス作るで" + e + " " + className)
+      if (e) {
+        println("インスタンス作るで" + className)
         // try to create the specification from the object name
-        createInstance[SpecificationStructure](className+"$", classLoader, defaultInstances).flatMap(asSpecificationStructure).orElse(
+        val xx = createInstance[SpecificationStructure](className+"$", classLoader, defaultInstances).flatMap(asSpecificationStructure).orElse(
           // fallback to the class if this is just a companion object
           createInstance[SpecificationStructure](className, classLoader, defaultInstances).flatMap(asSpecificationStructure)
         )
-      else
+        println("ababa " + xx)
+        xx
+      } else
         // try to create the specification from a class name
         createInstance[SpecificationStructure](className, classLoader, defaultInstances).flatMap(asSpecificationStructure)
     }

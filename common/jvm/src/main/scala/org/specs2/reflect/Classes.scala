@@ -23,20 +23,32 @@ trait Classes extends ClassOperations {
    *
    * This is useful to instantiate nested classes which are referencing their outer class in their constructor
    */
-  def createInstance[T <: AnyRef](className: String)(implicit m: ClassTag[T]): Operation[T] =
-    createInstance(className, getClass.getClassLoader)
+  def createInstance[T <: AnyRef](className: String)(implicit m: ClassTag[T]): Operation[T] = {
+//    Thread.currentThread().getStackTrace.foreach(println)
+    println("かかかかか " + className.length)
+    val zz = createInstance(className, getClass.getClassLoader)
+    println("ききき " + zz.runOption)
+    zz
+  }
 
   def createInstance[T <: AnyRef](className: String, loader: ClassLoader, defaultInstances: =>List[AnyRef] = Nil)(implicit m: ClassTag[T]): Operation[T] =
     loadClass(className, loader) >>= { klass: Class[T] =>
-      createInstanceFromClass(klass, loader, defaultInstances)
+      val x = createInstanceFromClass(klass, loader, defaultInstances)
+      println("nnnnnnnn " + x.runOption)
+      x
     }
 
   def createInstanceFromClass[T <: AnyRef](klass: Class[T], defaultInstances: =>List[AnyRef])(implicit m: ClassTag[T]): Operation[T] =
     createInstanceFromClass(klass, klass.getClassLoader, defaultInstances)
 
-  def createInstanceFromClass[T <: AnyRef](klass: Class[T], loader: ClassLoader, defaultInstances: =>List[AnyRef] = Nil)(implicit m: ClassTag[T]): Operation[T] =
-    findInstance[T](klass, loader, defaultInstances,
+  def createInstanceFromClass[T <: AnyRef](klass: Class[T], loader: ClassLoader, defaultInstances: =>List[AnyRef] = Nil)(implicit m: ClassTag[T]): Operation[T] = {
+    println("ええええ")
+    val ppp = findInstance[T](klass, loader, defaultInstances,
       klass.getDeclaredConstructors.toList.filter(_.getParameterTypes.size <= 1).sortBy(_.getParameterTypes.size))
+    println("おおお " + ppp.runOption)
+//    Thread.currentThread().getStackTrace.foreach(println)
+    ppp
+  }
 
   /** try to create an instance but return an exception if this is not possible */
   def createInstanceEither[T <: AnyRef](className: String, loader: ClassLoader, defaultInstances: =>List[AnyRef] = Nil)(implicit m: ClassTag[T]): Operation[Throwable Either T] =
@@ -44,6 +56,7 @@ trait Classes extends ClassOperations {
       tc match {
         case Left(t) => Operations.ok(Left(t))
         case Right(klass) =>
+          println("ううううう")
           findInstance[T](klass, loader, defaultInstances,
             klass.getDeclaredConstructors.toList.filter(_.getParameterTypes.size <= 1).sortBy(_.getParameterTypes.size)).map(Right(_))
       }
@@ -55,9 +68,12 @@ trait Classes extends ClassOperations {
         error.map(Operations.fromError[T]).getOrElse(Operations.fail[T]("Can't find a suitable constructor with 0 or 1 parameter for class "+klass.getName))
 
       case c :: rest =>
-        runOperation(createInstanceForConstructor[T](klass, c, loader, defaultInstances)).
+        println("bbbb")
+        val xxx = runOperation(createInstanceForConstructor[T](klass, c, loader, defaultInstances)).
           fold(e => findInstance[T](klass, loader, defaultInstances, rest, Some(e)),
             a => Operations.delayed[T](a))
+        println("cccc " + xxx.runOption)
+        xxx
     }
 
 
@@ -69,7 +85,9 @@ trait Classes extends ClassOperations {
                                                                    loader: ClassLoader,
                                                                    defaultInstances: =>List[AnyRef]): Operation[T] = {
 
+    //Thread.currentThread().getStackTrace.foreach(println)
     constructor.setAccessible(true)
+    println("jjjjjjj " + List(klass, constructor, loader) + " " + constructor.newInstance())
     if (constructor.getParameterTypes.isEmpty)
       newInstance(klass, constructor.newInstance())
 
